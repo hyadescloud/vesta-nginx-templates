@@ -3,7 +3,7 @@ server {
     server_name %domain_idn% %alias_idn%;
    
     location / {
-        proxy_pass      http://192.168.1.181:80;
+        proxy_pass      http://nextcloud.hyadescloud.com:80;
     }
 
 
