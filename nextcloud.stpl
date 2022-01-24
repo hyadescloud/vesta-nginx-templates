@@ -9,9 +9,8 @@ server {
     location / {
         
         proxy_pass      https://%ip%:%web_ssl_port%;
-        
         location ~* ^.+\.(%proxy_extentions%)$ {
-            rewrite ^ /index.php;
+          
             root           %sdocroot%;
             access_log     /var/log/%web_system%/domains/%domain%.log combined;
             access_log     /var/log/%web_system%/domains/%domain%.bytes bytes;
@@ -19,6 +18,20 @@ server {
             try_files      $uri @fallback;
         }
     }
+
+    location ~ /.well-known {
+        auth_basic off;
+        allow all;
+    }
+
+    location = /.well-known/carddav {
+        return 301 https://%ip%:%web_ssl_port%/remote.php/dav;
+    }
+
+    location = /.well-known/caldav {
+        return 301 https://%ip%:%web_ssl_port%/remote.php/dav;
+    }
+
 
 
     location /error/ {
