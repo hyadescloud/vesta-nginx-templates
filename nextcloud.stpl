@@ -19,20 +19,13 @@ server {
         }
     }
 
-    location ~ /.well-known {
-        auth_basic off;
-        allow all;
-    }
-
-    location = /.well-known/carddav {
-        return 301 https://%ip%:%web_ssl_port%/remote.php/dav;
-    }
-
-    location = /.well-known/caldav {
-        return 301 https://%ip%:%web_ssl_port%/remote.php/dav;
+    
+    location / {
+        try_files $uri $uri/ /index.php?$args;
     }
 
 
+   
 
     location /error/ {
         alias   %home%/%user%/web/%domain%/document_errors/;
