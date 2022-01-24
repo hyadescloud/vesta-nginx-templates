@@ -9,8 +9,9 @@ server {
     location / {
         
         proxy_pass      https://%ip%:%web_ssl_port%;
-        rewrite ^ /index.php;
+        
         location ~* ^.+\.(%proxy_extentions%)$ {
+            rewrite ^ /index.php;
             root           %sdocroot%;
             access_log     /var/log/%web_system%/domains/%domain%.log combined;
             access_log     /var/log/%web_system%/domains/%domain%.bytes bytes;
