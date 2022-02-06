@@ -1,11 +1,9 @@
 server {
     listen      %ip%:%proxy_port%;
     server_name %domain_idn% %alias_idn%;
-   
+
     location / {
-        proxy_pass      http://nextcloud.hyadescloud.com:80;
+        rewrite ^(.*) https://%domain_idn%$1 permanent;
     }
-
-
-    include %home%/%user%/conf/web/nginx.%domain%.conf*;
+    include %home%/%user%/conf/web/*nginx.%domain_idn%.conf_letsencrypt;
 }
