@@ -1,10 +1,11 @@
 server {
     listen      %ip%:%proxy_port%;
     server_name %domain_idn% %alias_idn%;
-
+   
     location / {
-        rewrite ^(.*) https://%domain_idn%$1 permanent;
+        proxy_pass      http://%ip%:8083;
     }
-    
-    include %home%/%user%/conf/web/*nginx.%domain_idn%.conf_letsencrypt;
+
+
+    include %home%/%user%/conf/web/nginx.%domain%.conf*;
 }
