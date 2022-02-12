@@ -7,6 +7,12 @@ server {
     error_log  /var/log/%web_system%/domains/%domain%.error.log error;
 
     location / {
+        rewrite ^/index.php/(.*) /$1  permanent;
+        rewrite ^/.well-known/host-meta /public.php?service=host-meta last;
+        rewrite ^/.well-known/host-meta.json /public.php?service=host-meta-json last;
+        rewrite ^/.well-known/carddav /remote.php/carddav/ redirect;
+        rewrite ^/.well-known/caldav /remote.php/caldav/ redirect;
+        rewrite ^(/core/doc/[^\/]+/)$ $1/index.html;
         
         proxy_pass      https://%ip%:%web_ssl_port%;
         location ~* ^.+\.(%proxy_extentions%)$ {
