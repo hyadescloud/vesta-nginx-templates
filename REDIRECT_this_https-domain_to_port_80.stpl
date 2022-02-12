@@ -4,8 +4,6 @@ server {
     ssl_certificate      %ssl_pem%;
     ssl_certificate_key  %ssl_key%;
     error_log  /var/log/%web_system%/domains/%domain%.error.log error;
-    index       index.php index.html index.htm;
-
 
     location / {
         
@@ -15,7 +13,7 @@ server {
             access_log     /var/log/%web_system%/domains/%domain%.log combined;
             access_log     /var/log/%web_system%/domains/%domain%.bytes bytes;
             expires        max;
-            try_files      $uri $uri/ /index.php @fallback;
+            try_files      $uri @fallback;
         }
     }
 
