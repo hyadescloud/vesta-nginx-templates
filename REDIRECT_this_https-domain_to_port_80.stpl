@@ -16,8 +16,17 @@ server {
         rewrite ^/.well-known/carddav /remote.php/carddav/ redirect;
         rewrite ^/.well-known/caldav /remote.php/caldav/ redirect;
         rewrite ^(/core/doc/[^\/]+/)$ $1/index.html;
-      
 
+
+        location ~ \.php(?:$|/) {
+            fastcgi_split_path_info ^(.+\.php)(/.+)$;
+            root           %sdocroot%;
+            access_log     /var/log/%web_system%/domains/%domain%.log combined;
+            access_log     /var/log/%web_system%/domains/%domain%.bytes bytes;
+            expires        max;
+            try_files      $uri $uri/ /index.php @fallback;
+        }
+      
         proxy_pass      http://%domain_idn%:80;
         location ~* ^.+\.(%proxy_extentions%)$ {
             root           %sdocroot%;
