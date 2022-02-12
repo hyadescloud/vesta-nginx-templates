@@ -10,6 +10,10 @@ server {
     rewrite ^/carddav(.*)$ /remote.php/carddav$1 redirect;
     rewrite ^/webdav(.*)$ /remote.php/webdav$1 redirect;
 
+    if ($request_uri ~* "^(.*/)index\.php$") {
+        return 301 $1;
+    }
+
     location / {
         rewrite ^/.well-known/host-meta /public.php?service=host-meta last;
         rewrite ^/.well-known/host-meta.json /public.php?service=host-meta-json last;
@@ -17,16 +21,6 @@ server {
         rewrite ^/.well-known/caldav /remote.php/caldav/ redirect;
         rewrite ^(/core/doc/[^\/]+/)$ $1/index.html;
 
-
-        location ~ \.php(?:$|/) {
-            fastcgi_split_path_info ^(.+\.php)(/.+)$;
-            root           %sdocroot%;
-            access_log     /var/log/%web_system%/domains/%domain%.log combined;
-            access_log     /var/log/%web_system%/domains/%domain%.bytes bytes;
-            expires        max;
-            try_files      $uri $uri/ /index.php @fallback;
-        }
-      
         proxy_pass      http://%domain_idn%:80;
         location ~* ^.+\.(%proxy_extentions%)$ {
             root           %sdocroot%;
