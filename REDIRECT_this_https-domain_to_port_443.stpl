@@ -5,6 +5,8 @@ server {
     ssl_certificate_key  %ssl_key%;
     error_log  /var/log/%web_system%/domains/%domain%.error.log error;
 
+    add_header Strict-Transport-Security "max-age=31536000; includeSubDomains" always;
+
     location / {
         proxy_pass      https://%domain_idn%:443;
         location ~* ^.+\.(%proxy_extentions%)$ {
