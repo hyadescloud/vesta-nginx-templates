@@ -16,7 +16,7 @@ server {
         rewrite ^/.well-known/carddav /remote.php/carddav/ redirect;
         rewrite ^/.well-known/caldav /remote.php/caldav/ redirect;
         rewrite ^(/core/doc/[^\/]+/)$ $1/index.html;
-        try_files $uri $uri/ /index.php;
+      
 
         proxy_pass      http://%domain_idn%:80;
         location ~* ^.+\.(%proxy_extentions%)$ {
@@ -24,7 +24,7 @@ server {
             access_log     /var/log/%web_system%/domains/%domain%.log combined;
             access_log     /var/log/%web_system%/domains/%domain%.bytes bytes;
             expires        max;
-            try_files      $uri @fallback;
+            try_files      $uri $uri/ /index.php @fallback;
         }
     }
 
