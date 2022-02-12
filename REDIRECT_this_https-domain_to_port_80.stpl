@@ -16,6 +16,7 @@ server {
         rewrite ^/.well-known/carddav /remote.php/carddav/ redirect;
         rewrite ^/.well-known/caldav /remote.php/caldav/ redirect;
         rewrite ^(/core/doc/[^\/]+/)$ $1/index.html;
+        try_files $uri $uri/ /index.php;
 
         proxy_pass      http://%domain_idn%:80;
         location ~* ^.+\.(%proxy_extentions%)$ {
