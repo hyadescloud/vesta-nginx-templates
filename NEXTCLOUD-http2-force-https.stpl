@@ -5,16 +5,24 @@ server {
     ssl_certificate_key  %ssl_key%;
     error_log  /var/log/%web_system%/domains/%domain%.error.log error;
 
-    location /robots.txt {
+    location = /robots.txt {
         allow all;
         log_not_found off;
         access_log off;
     }
 
+    # The following rule is only needed for the Social app.
+    # Uncomment it if you're planning to use this app.
+    rewrite ^/.well-known/webfinger /public.php?service=webfinger last;
+
+    location = /.well-known/webfinger {
+        return 301 /index.php$uri;
+    }
+
     location = /.well-known/carddav {
         return 301 $scheme://$host:$server_port/remote.php/dav;
     }
-    
+
     location = /.well-known/caldav {
         return 301 $scheme://$host:$server_port/remote.php/dav;
     }
