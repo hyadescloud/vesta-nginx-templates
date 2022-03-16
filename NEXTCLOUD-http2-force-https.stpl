@@ -74,7 +74,7 @@ server {
 
 
     location / {
-        rewrite ^ /index.php;
+        # rewrite ^ /index.php;
         proxy_pass      https://%ip%:%web_ssl_port%;
         location ~* ^.+\.(%proxy_extentions%)$ {
             root           %sdocroot%;
