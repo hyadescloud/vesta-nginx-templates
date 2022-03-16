@@ -16,7 +16,7 @@ server {
     rewrite ^/.well-known/webfinger /public.php?service=webfinger last;
 
     location = /.well-known/webfinger {
-        return 301 /index.php$uri;
+        return 301 $scheme://$host:$server_port/index.php$uri;
     }
 
     location = /.well-known/carddav {
