@@ -13,10 +13,25 @@ server {
 
     location = /.well-known/carddav {
         return 301 $scheme://$host:$server_port/remote.php/dav;
-      }
-      location = /.well-known/caldav {
+    }
+    
+    location = /.well-known/caldav {
         return 301 $scheme://$host:$server_port/remote.php/dav;
-      }
+    }
+
+    location ~ ^\/(?:build|tests|config|lib|3rdparty|templates|data)\/ {
+        deny all;
+    }
+
+    location ~ ^\/(?:\.|autotest|occ|issue|indie|db_|console) {
+        deny all;
+    }
+
+    location ~ \.(?:png|html|ttf|ico|jpg|jpeg|bcmap|mp4|webm)$ {
+        try_files $uri /index.php$request_uri;
+        # Optional: Don't log access to other assets
+        access_log off;
+    }
 
     location / {
         proxy_pass      https://%ip%:%web_ssl_port%;
