@@ -5,9 +5,23 @@ server {
     ssl_certificate_key  %ssl_key%;
     error_log  /var/log/%web_system%/domains/%domain%.error.log error;
 
+    location /robots.txt {
+        allow all;
+        log_not_found off;
+        access_log off;
+    }
+
+    location = /.well-known/carddav {
+        return 301 $scheme://$host:$server_port/remote.php/dav;
+      }
+      location = /.well-known/caldav {
+        return 301 $scheme://$host:$server_port/remote.php/dav;
+      }
+
     location / {
-        proxy_pass      https://%ip%:%web_ssl_port%/index.php;
+        proxy_pass      https://%ip%:%web_ssl_port%;
         location ~* ^.+\.(%proxy_extentions%)$ {
+            rewrite ^ /index.php;
             root           %sdocroot%;
             access_log     /var/log/%web_system%/domains/%domain%.log combined;
             access_log     /var/log/%web_system%/domains/%domain%.bytes bytes;
